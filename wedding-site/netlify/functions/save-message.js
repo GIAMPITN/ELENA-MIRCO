@@ -1,45 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+import { getStore } from "@netlify/blobs";
 
-// Netlify Blobs — storage persistente incluso nel piano gratuito
-const { getStore } = require('@netlify/blobs');
-
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+export default async (req) => {
+  if (req.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
   }
 
   try {
-    const data = JSON.parse(event.body);
-    const store = getStore('messages');
+    const data = await req.json();
+    const store = getStore({ name: "messaggi", consistency: "strong" });
 
-    // Leggi messaggi esistenti
-    let messages = [];
-    try {
-      const existing = await store.get('all', { type: 'json' });
-      if (existing) messages = existing;
-    } catch(e) {}
+    const existing = await store.get("all", { type: "json" });
+    const messages = Array.isArray(existing) ? existing : [];
 
-    // Aggiungi nuovo messaggio
-    const entry = {
+    messages.push({
       id: Date.now(),
-      nome: data.nome,
-      r1: data.r1 || '',
-      r2: data.r2 || '',
-      r3: data.r3 || '',
-      r4: data.r4 || '',
+      nome: String(data.nome || "").slice(0, 60),
+      r1: String(data.r1 || "").slice(0, 3000),
       ts: new Date().toISOString()
-    };
-    messages.push(entry);
+    });
 
-    await store.setJSON('all', messages);
+    await store.setJSON("all", messages);
 
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true })
-    };
-  } catch(e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 };
