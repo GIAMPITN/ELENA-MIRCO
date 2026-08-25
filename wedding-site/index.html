@@ -645,8 +645,9 @@
       <div class="result-score" id="resultScore">8 <span>/ 10</span></div>
       <p class="result-msg" id="resultMsg"></p>
       <div class="deco-line" style="width:100%"><div class="deco-diamond"></div></div>
+      <button class="btn-gold" style="width:100%" onclick="vaiAiMessaggi()">Lascia un Messaggio</button>
       <button class="btn-outline" style="width:100%" onclick="resetQuiz()">Rigioca</button>
-      <button class="btn-gold" style="width:100%" onclick="goHome()">Torna al Menu</button>
+      <button class="btn-outline" style="width:100%" onclick="goHome()">Torna al Menu</button>
     </div>
   </div>
 </div>
@@ -674,6 +675,10 @@
         Invia il tuo Messaggio
       </button>
     </div>
+
+    <p id="msgError" style="display:none; text-align:center; margin-top:18px; font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; color:rgba(255,160,160,0.85); line-height:1.5">
+      Non siamo riusciti a inviare il messaggio.<br>Controlla la connessione e riprova.
+    </p>
   </div>
 
   <div id="submitSuccess" style="display:none; text-align:center; padding:40px 0">
@@ -685,7 +690,9 @@
       Il tuo messaggio è stato custodito
     </p>
     <div class="deco-line" style="margin-top:24px"><div class="deco-diamond"></div></div>
-    <button class="btn-outline" style="width:100%;margin-top:16px" onclick="resetForm()">Scrivi ancora</button>
+    <button class="btn-gold" style="width:100%;margin-top:16px" onclick="vaiAlQuiz()">Fai il Quiz degli Sposi</button>
+    <button class="btn-outline" style="width:100%;margin-top:12px" onclick="resetForm()">Scrivi ancora</button>
+    <button class="btn-outline" style="width:100%;margin-top:12px" onclick="goHome()">Torna al Menu</button>
   </div>
 </div>
 
@@ -849,16 +856,32 @@ async function submitAnswers() {
   }
 
   const sendBtn = document.querySelector('#msgForm .btn-gold');
+  const errBox = document.getElementById('msgError');
+  errBox.style.display = 'none';
   sendBtn.textContent = 'Invio in corso…';
   sendBtn.disabled = true;
 
+  let salvato = false;
   try {
-    await fetch('/.netlify/functions/save-message', {
+    const res = await fetch('/.netlify/functions/save-message', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome: name, r1: msg, r2: '', r3: '', r4: '' })
+      body: JSON.stringify({ nome: name, r1: msg })
     });
-  } catch(e) {}
+    if (res.ok) {
+      const data = await res.json();
+      salvato = data && data.ok === true;
+    }
+  } catch(e) {
+    salvato = false;
+  }
+
+  if (!salvato) {
+    errBox.style.display = 'block';
+    sendBtn.textContent = 'Riprova';
+    sendBtn.disabled = false;
+    return;
+  }
 
   document.getElementById('thankName').textContent = name;
   document.getElementById('msgForm').style.display = 'none';
@@ -868,11 +891,26 @@ async function submitAnswers() {
 function resetForm() {
   document.getElementById('guestName').value = '';
   document.getElementById('msgText').value = '';
+  document.getElementById('msgError').style.display = 'none';
   document.getElementById('msgForm').style.display = 'block';
   const sendBtn = document.querySelector('#msgForm .btn-gold');
   sendBtn.textContent = 'Invia il tuo Messaggio';
   sendBtn.disabled = false;
   document.getElementById('submitSuccess').style.display = 'none';
+}
+
+function vaiAlQuiz() {
+  resetForm();
+  resetQuiz();
+  showScreen('quiz-screen');
+  window.scrollTo(0, 0);
+}
+
+function vaiAiMessaggi() {
+  resetQuiz();
+  resetForm();
+  showScreen('domande-screen');
+  window.scrollTo(0, 0);
 }
 
 function showScreen(id) {
@@ -889,6 +927,7 @@ function goHome() {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('backBtn').classList.remove('visible');
   resetQuiz();
+  resetForm();
 }
 
 // ══ QUIZ LOGIC ══

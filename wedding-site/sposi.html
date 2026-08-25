@@ -259,7 +259,12 @@
       border: 1px solid #C9A84C;
       padding: 20px;
       break-inside: avoid;
+      opacity: 1 !important;
+      animation: none !important;
+      transform: none !important;
     }
+    netlify-hud, #netlify-hud,
+    [id*="netlify-hud"], [class*="netlify-hud"] { display: none !important; }
     .msg-from { color: #C9A84C; border-bottom-color: #e8d08a; }
     .msg-ts { color: #aaa; }
     .msg-label { color: #aaa; }
@@ -348,7 +353,6 @@ async function loadMessages() {
       const card = document.createElement('div');
       card.className = 'msg-card';
       card.style.animationDelay = `${idx * 0.05}s`;
-      card.style.opacity = '0';
 
       const answers = m.r1 ? `<div class="msg-item"><div class="msg-text">${m.r1}</div></div>` : '';
 
