@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elena & Mirco — Il Giorno del Sì</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --gold-pale: #F5EDD5;
+    --dark: #0D0B08;
+    --dark-2: #1A1612;
+    --dark-3: #2A2318;
+    --cream: #F0E8D5;
+    --cream-2: #E8DCC8;
+    --text: #D4C8A8;
+    --text-dim: #8A7D5E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── DECORATIVE LINES ── */
+  .deco-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .deco-line::before,
+  .deco-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    max-width: 120px;
+  }
+  .deco-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ── COVER ── */
+  #cover {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    z-index: 1;
+  }
+
+  #cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover-date {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .cover-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 14vw, 88px);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s forwards;
+  }
+  .cover-names em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .cover-ampersand {
+    display: block;
+    font-size: 0.65em;
+    color: var(--gold);
+    font-style: italic;
+    line-height: 1.2;
+  }
+
+  .cover-subtitle {
+    font-family: 'Cormorant SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    margin-top: 24px;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+
+  .cover-cta {
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #C9A84C, #E8D08A, #C9A84C);
+    background-size: 200% 200%;
+    color: var(--dark);
+    border: none;
+    padding: 16px 32px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201,168,76,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 16px 32px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    padding: 48px 24px;
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .screen.active { display: flex; flex-direction: column; }
+
+  .screen-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .screen-tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .screen-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 8vw, 48px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+  .screen-title em { font-style: italic; color: var(--gold-light); }
+
+  /* ── QUIZ ── */
+  .question-counter {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 1px;
+    background: rgba(201,168,76,0.15);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: -3px; top: -3px;
+    width: 7px; height: 7px;
+    background: var(--gold-light);
+    transform: rotate(45deg);
+  }
+
+  .question-card {
+    background: linear-gradient(135deg, rgba(42,35,24,0.8), rgba(26,22,18,0.9));
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 32px 28px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border-top: 1px solid var(--gold);
+    border-left: 1px solid var(--gold);
+  }
+  .question-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 40px; height: 40px;
+    border-bottom: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+  }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--cream);
+    text-align: center;
+  }
+
+  .answers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .answer-btn {
+    background: rgba(42,35,24,0.6);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--text);
+    padding: 16px 20px;
+    text-align: left;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .answer-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .answer-btn:hover::before { opacity: 1; }
+  .answer-btn:hover {
+    border-color: rgba(201,168,76,0.5);
+    color: var(--cream);
+    transform: translateX(4px);
+  }
+  .answer-btn.correct {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+  }
+  .answer-btn.wrong {
+    border-color: rgba(180,60,60,0.5);
+    background: rgba(180,60,60,0.08);
+    color: rgba(255,180,180,0.7);
+  }
+  .answer-btn.disabled { pointer-events: none; }
+  .answer-letter {
+    font-family: 'Cormorant SC', serif;
+    font-size: 12px;
+    color: var(--gold);
+    min-width: 20px;
+  }
+
+  .feedback-msg {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    padding: 16px;
+    margin-bottom: 24px;
+    min-height: 60px;
+    color: var(--gold-light);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .feedback-msg.show { opacity: 1; }
+  .feedback-msg.wrong-msg { color: rgba(255,180,180,0.8); }
+
+  /* ── DOMANDE OSPITI ── */
+  .name-input-wrap {
+    position: relative;
+    margin-bottom: 32px;
+  }
+  .fancy-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 12px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--cream);
+    outline: none;
+    transition: border-color 0.3s;
+    text-align: center;
+  }
+  .fancy-input::placeholder { color: var(--text-dim); font-style: italic; }
+  .fancy-input:focus { border-bottom-color: var(--gold); }
+
+  .question-bubble {
+    background: linear-gradient(135deg, rgba(42,35,24,0.8), rgba(26,22,18,0.9));
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    animation: fadeUp 0.5s forwards;
+  }
+  .bubble-question {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .bubble-answer {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    padding: 10px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text);
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s;
+  }
+  .bubble-answer:focus { border-bottom-color: var(--gold); }
+  .bubble-answer::placeholder { color: var(--text-dim); font-style: italic; }
+
+  .answers-submitted {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .submitted-card {
+    background: linear-gradient(135deg, rgba(42,35,24,0.9), rgba(26,22,18,1));
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 24px;
+    animation: fadeUp 0.6s forwards;
+  }
+  .submitted-from {
+    font-family: 'Cormorant SC', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .submitted-q {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .submitted-a {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  /* ── RESULTS ── */
+  .result-screen {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .result-score {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .result-score span {
+    font-size: 28px;
+    color: var(--text-dim);
+  }
+  .result-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--cream);
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  /* ── NAV BACK ── */
+  .back-btn {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    transition: color 0.3s;
+    display: none;
+  }
+  .back-btn:hover { color: var(--gold); }
+  .back-btn::before { content: '←'; font-size: 14px; }
+  .back-btn.visible { display: flex; }
+
+  /* ── FLOATING ORNAMENTS ── */
+  .ornament {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+  }
+  .ornament-1 {
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+  }
+  .ornament-2 {
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+    50% { box-shadow: 0 0 20px 4px rgba(201,168,76,0.15); }
+  }
+
+  .page-enter { animation: fadeUp 0.6s forwards; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    margin-bottom: 32px;
+  }
+  .tab {
+    flex: 1;
+    padding: 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeUp 0.4s forwards; }
+
+  /* ── SUCCESS ── */
+  .success-ring {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+    animation: pulse-gold 2s infinite;
+  }
+</style>
+</head>
+<body>
+
+<div class="ornament ornament-1"></div>
+<div class="ornament ornament-2"></div>
+
+<button class="back-btn" id="backBtn" onclick="goHome()">Torna</button>
+
+<!-- ═══ COVER ═══ -->
+<div id="cover">
+  <p class="cover-date">Il Giorno del Sì</p>
+
+  <div class="cover-names">
+    <em>Elena</em>
+    <span class="cover-ampersand">&amp;</span>
+    <em>Mirco</em>
+  </div>
+
+  <p class="cover-subtitle">Benvenuto · Gioca con Noi</p>
+
+  <div class="deco-line" style="opacity:0;animation:fadeUp 1s 0.9s forwards">
+    <div class="deco-diamond"></div>
+  </div>
+
+  <div class="cover-cta">
+    <button class="btn-gold" onclick="showScreen('quiz-screen')">
+      Quiz degli Sposi
+    </button>
+    <button class="btn-outline" onclick="showScreen('domande-screen')">
+      Lascia un Messaggio
+    </button>
+  </div>
+</div>
+
+<!-- ═══ QUIZ SCREEN ═══ -->
+<div id="quiz-screen" class="screen">
+  <div class="screen-header">
+    <p class="screen-tag">Gioco · I</p>
+    <h1 class="screen-title">Quanto li<br><em>conosci?</em></h1>
+    <div class="deco-line"><div class="deco-diamond"></div></div>
+  </div>
+
+  <!-- INTRO QUIZ -->
+  <div id="quiz-intro">
+    <div class="question-card" style="text-align:center; padding:40px 28px;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:18px; line-height:1.7; color:var(--cream)">
+        Dieci domande su <em style="color:var(--gold-light)">Elena e Mirco</em>.<br>
+        Scopri quanto li conosci davvero.
+      </p>
+    </div>
+    <div class="deco-line"><div class="deco-diamond"></div></div>
+    <button class="btn-gold" style="width:100%;margin-top:8px" onclick="startQuiz()">
+      Inizia il Quiz
+    </button>
+  </div>
+
+  <!-- QUIZ QUESTIONS -->
+  <div id="quiz-game" style="display:none; flex-direction:column; flex:1">
+    <div class="question-counter" id="qCounter">Domanda 1 di 10</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+    <div class="question-card">
+      <p class="question-text" id="questionText"></p>
+    </div>
+    <div class="answers-grid" id="answersGrid"></div>
+    <div class="feedback-msg" id="feedbackMsg"></div>
+    <button class="btn-gold" id="nextBtn" style="display:none;width:100%" onclick="nextQuestion()">
+      Prossima Domanda
+    </button>
+  </div>
+
+  <!-- QUIZ RESULTS -->
+  <div id="quiz-results" style="display:none; flex:1">
+    <div class="result-screen">
+      <div class="success-ring" id="resultEmoji">🥂</div>
+      <div class="result-score" id="resultScore">8 <span>/ 10</span></div>
+      <p class="result-msg" id="resultMsg"></p>
+      <div class="deco-line" style="width:100%"><div class="deco-diamond"></div></div>
+      <button class="btn-outline" style="width:100%" onclick="resetQuiz()">Rigioca</button>
+      <button class="btn-gold" style="width:100%" onclick="goHome()">Torna al Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DOMANDE SCREEN ═══ -->
+<div id="domande-screen" class="screen">
+  <div class="screen-header">
+    <p class="screen-tag">Per gli Sposi</p>
+    <h1 class="screen-title">Il tuo<br><em>Messaggio</em></h1>
+    <div class="deco-line"><div class="deco-diamond"></div></div>
+  </div>
+
+  <div id="msgForm">
+    <div class="name-input-wrap">
+      <input class="fancy-input" id="guestName" placeholder="Il tuo nome…" maxlength="40">
+    </div>
+
+    <div class="question-bubble">
+      <p class="bubble-question">Il tuo messaggio per Elena e Mirco</p>
+      <textarea class="bubble-answer" id="msgText" rows="6" placeholder="Scrivi quello che senti…"></textarea>
+    </div>
+
+    <div style="margin-top:24px">
+      <button class="btn-gold" style="width:100%" onclick="submitAnswers()">
+        Invia il tuo Messaggio
+      </button>
+    </div>
+  </div>
+
+  <div id="submitSuccess" style="display:none; text-align:center; padding:40px 0">
+    <div class="success-ring">💌</div>
+    <p style="font-family:'Cormorant Garamond',serif; font-size:24px; font-style:italic; color:var(--cream)">
+      Grazie, <span id="thankName" style="color:var(--gold-light)"></span>
+    </p>
+    <p style="font-family:'Jost',sans-serif; font-size:13px; color:var(--text-dim); margin-top:12px; letter-spacing:0.1em">
+      Il tuo messaggio è stato custodito
+    </p>
+    <div class="deco-line" style="margin-top:24px"><div class="deco-diamond"></div></div>
+    <button class="btn-outline" style="width:100%;margin-top:16px" onclick="resetForm()">Scrivi ancora</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// QUIZ DATA
+// ══════════════════════════════════════
+const questions = [
+  {
+    q: "In che anno hanno iniziato a stare insieme Elena e Mirco?",
+    answers: ["2022", "2023", "2024", "2025"],
+    correct: 1,
+    feedback: "2023. Tre anni, volati in un istante.",
+    wrongFeedbacks: [
+      "2022? Sei arrivato in anticipo di un anno. Va beh che non vedevano l'ora però... anche tu!",
+      null,
+      "2024? Quasi quasi. Ma no. Erano già insieme da un anno quando tu pensavi stessero ancora solo chiacchierando.",
+      "2025? Stai confondendo l'anno della proposta di matrimonio con quello in cui si sono messi insieme. Dettaglio non trascurabile."
+    ]
+  },
+  {
+    q: "Dov'è stato il loro primo appuntamento?",
+    answers: ["In un circuito", "In un ristorante a Trento", "In un ristorante a Peschiera", "In un ristorante a Bergamo"],
+    correct: 3,
+    feedback: "Bergamo. Lui precisino al millimetro, lei con quegli occhi blu — il ristorante non aveva speranze. 🍷",
+    wrongFeedbacks: [
+      "In un circuito? Mirco ci va, sì... ma non era proprio il setting ideale per conquistare Elena. 🏎️",
+      "Trento era casa sua, non il luogo del primo appuntamento. E ti sembrava che facessero una cosa semplice!",
+      "Peschiera è sul lago, romantica, ma sbagliata. Era Bergamo!",
+      null
+    ]
+  },
+  {
+    q: "Come si sono fidanzati ufficialmente?",
+    answers: ["Nessuna proposta ufficiale", "Mirco ha comprato due paia di scarpe personalizzate con le iniziali dei nomi stampate dietro", "Durante un weekend di gara Elena lo ha chiesto a Mirco", "Mirco lo ha chiesto ad Elena tramite WhatsApp"],
+    correct: 1,
+    feedback: "Due paia di scarpe uguali, con le iniziali dei nomi stampate dietro. Romantico, preciso, originale. Ovviamente le scarpe erano perfettamente abbinate. 👟👟",
+    wrongFeedbacks: [
+      "Nessuna proposta? Ma lo conosci Mirco? Credi davvero che abbia lasciato una cosa del genere al caso? 📐",
+      null,
+      "Elena lo ha chiesto a Mirco? Elena è anticonformista ma dai… no, Mirco a queste cose ci tiene.",
+      "Via WhatsApp?! OK... va bene che è comodo, ma a tutto c'è un limite!"
+    ]
+  },
+  {
+    q: "Qual è il piatto preferito di Elena?",
+    answers: ["Pizza Margherita", "Caesar salad", "Linguine alle vongole", "Pasta al pesto"],
+    correct: 2,
+    feedback: "Linguine alle vongole. Elegante, decisa, niente fronzoli. Esattamente come lei. 🍝",
+    wrongFeedbacks: [
+      "Pizza Margherita. Ottima scelta, ma non la sua. Elena ha gusto più raffinato.",
+      "Caesar salad? Elena non ha bisogno di dieta. Pensa a qualcosa con più carattere. 🐚",
+      null,
+      "Pasta al pesto. Basilare. Elena merita di meglio, e lo sa. 🌿"
+    ]
+  },
+  {
+    q: "Qual è il piatto preferito di Mirco?",
+    answers: ["Carbonara", "Tagliata di pollo", "Profitterol", "Pasta al pesto"],
+    correct: 0,
+    feedback: "La carbonara. Un piatto che deve essere fatto bene e non perdona errori grossolani. Può arrivare anche a mangiarne due piatti di seguito — secondo te gli piace?",
+    wrongFeedbacks: [
+      null,
+      "Tagliata di pollo? Mirco non è più in preparazione atletica. È un uomo di carbonara, niente compromessi.",
+      "Il profitterol come piatto preferito? Segnatelo, se vuoi farlo contento: torta ai tre cioccolati!",
+      "Pasta al pesto? No. Mirco vuole guanciale, pecorino e uova. Niente scorciatoie."
+    ]
+  },
+  {
+    q: "Qual è il film o la serie preferita di Mirco?",
+    answers: ["Mamma ho perso l'aereo", "The Big Bang Theory", "The Fast and Furious", "Prison Break"],
+    correct: 2,
+    feedback: "Fast and Furious! Basta che sente il rumore del motore per essere felice! 🏎️",
+    wrongFeedbacks: [
+      "Mamma ho perso l'aereo? Mirco pianifica tutto con precisione millimetrica. Non perde neanche un cappellino, figuriamoci un aereo.",
+      "The Big Bang Theory? Mirco è più uomo d'azione che di teoria. Molto più concreto!",
+      null,
+      "Prison Break? Mirco adora anche questo genere di film, ma è Fast and Furious il suo preferito!"
+    ]
+  },
+  {
+    q: "Qual è il loro film preferito da vedere insieme a casa?",
+    answers: ["Harry Potter", "Benvenuti al Sud", "Nessuno, perché Elena si addormenta sempre", "Mr. Bean"],
+    correct: 2,
+    feedback: "Nessuno. Elena si addormenta entro i titoli di testa. Mirco invece tiene la tv accesa tutta la notte, ma quello è un altro problema.",
+    wrongFeedbacks: [
+      "Harry Potter dura quasi tre ore. Elena non sopravvive ai primi venti minuti di qualsiasi film. Matematicamente impossibile. 🧙",
+      "Benvenuti al Sud è simpatico, ma Elena non ci arriva \"al Sud\". Al casello di Bariano è già nelle braccia di Morfeo.",
+      null,
+      "Mr. Bean? Almeno è breve. Ma no, Elena si addormenta comunque. È un talento. 🛋️"
+    ]
+  },
+  {
+    q: "Qual è la cosa che Elena non sopporta di Mirco (ma in fondo ama)?",
+    answers: ["Puntualità", "Romanticismo", "Ambizione", "Precisione"],
+    correct: 3,
+    feedback: "La precisione. L'uomo che sistema le scarpe al millimetro e non lascia nulla al caso. Con la povera Elena che non può lasciare la posta in entrata. Esasperante. Indispensabile.",
+    wrongFeedbacks: [
+      "La puntualità? Essere puntuali è una virtù. Mirco invece è preciso, che è una cosa diversa, e decisamente più intensa. ⏱️",
+      "Il romanticismo? Come proposta di mettersi insieme ha usato due paia di scarpe personalizzate. Se non è diversamente romantico lui! Sopportare quello è un privilegio, non un difetto. 👟",
+      "L'ambizione? Mirco lavora, corre, pianifica con passione. Ma l'ambizione è quella giusta. Non infastidisce Elena.",
+      null
+    ]
+  },
+  {
+    q: "Qual è la cosa che Mirco non sopporta di Elena (ma in fondo ama)?",
+    answers: ["Romanticismo", "Permalosità", "Sensibilità", "Solarità"],
+    correct: 1,
+    feedback: "La permalosità. Anche se va detto che Mirco non è proprio immune al fenomeno, ma lui ovviamente non lo ammetterebbe mai. 🙃",
+    wrongFeedbacks: [
+      "Il romanticismo di Elena? Basta guardarlo quando la guarda: brodo di giuggiole!",
+      null,
+      "La sensibilità? Ma secondo te davvero potrebbe dargli fastidio? Ma cos'è, ti ci sei infilato a questo matrimonio?",
+      "La solarità?! Se volevi mangiare a sbaffo e ti sei infilato in villa al primo matrimonio che hai trovato dillo. Perché qui sembra che tu non sappia proprio niente."
+    ]
+  },
+  {
+    q: "Qual è la frase che Elena ripete sempre?",
+    answers: ["Quando andiamo in pista?", "Ho sonno", "Che palle questo caldo / amo l'inverno!", "Andiamo a fare un giro in bici"],
+    correct: 2,
+    feedback: "\"Che palle questo caldo.\" Elena e le temperature estive: un conflitto irrisolvibile, probabilmente più antico della loro storia d'amore. ❄️",
+    wrongFeedbacks: [
+      "\"Quando andiamo in pista?\" Beh se hai scelto questa... ESCI SUBITO DA QUI! Vai via!",
+      "\"Ho sonno\" è un'opzione plausibile, ci sei andato vicino. Ma succede solo la sera, e di botto. Quindi non lo direbbe mai prima.",
+      null,
+      "\"Andiamo a fare un giro in bici\"? Ora, se hai scelto questa risposta è meglio che pedali! Perché se potesse, Elena le passeggiate in bici le vieterebbe per legge!"
+    ]
+  },
+  {
+    q: "Qual è la frase che Mirco ripete sempre?",
+    answers: ["Questa sera non mangio", "Mi riposo sul divano", "Questa sera cucino io", "Quand'è la prossima volta che andiamo con i gokart/moto?"],
+    correct: 3,
+    feedback: "\"Quand'è la prossima volta…?\" Pilota di moto, passione per le auto, go-kart ogni volta che può. La velocità non gli passa. Elena lo sa. 🏁",
+    wrongFeedbacks: [
+      "\"Questa sera non mangio\"? E niente, se hai scelto questa vuol dire che stai scegliendo a caso e non lo conosci proprio.",
+      "\"Mi riposo sul divano\"? Con tutte le cose da fare? Sul divano solo con 39 di febbre.",
+      "\"Questa sera cucino io\"? No, ti prego. Lo hai mai visto cucinare? Neanche con il bimby è capace!",
+      null
+    ]
+  }
+];
+// ══════════════════════════════════════
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+// ══ DOMANDE OSPITI ══
+async function submitAnswers() {
+  const name = document.getElementById('guestName').value.trim();
+  if (!name) {
+    document.getElementById('guestName').focus();
+    document.getElementById('guestName').style.borderBottomColor = 'rgba(255,120,120,0.6)';
+    setTimeout(() => document.getElementById('guestName').style.borderBottomColor = '', 2000);
+    return;
+  }
+  const msg = document.getElementById('msgText').value.trim();
+  if (!msg) {
+    document.getElementById('msgText').focus();
+    return;
+  }
+
+  const sendBtn = document.querySelector('#msgForm .btn-gold');
+  sendBtn.textContent = 'Invio in corso…';
+  sendBtn.disabled = true;
+
+  try {
+    await fetch('/.netlify/functions/save-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: name, r1: msg, r2: '', r3: '', r4: '' })
+    });
+  } catch(e) {}
+
+  document.getElementById('thankName').textContent = name;
+  document.getElementById('msgForm').style.display = 'none';
+  document.getElementById('submitSuccess').style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('guestName').value = '';
+  document.getElementById('msgText').value = '';
+  document.getElementById('msgForm').style.display = 'block';
+  const sendBtn = document.querySelector('#msgForm .btn-gold');
+  sendBtn.textContent = 'Invia il tuo Messaggio';
+  sendBtn.disabled = false;
+  document.getElementById('submitSuccess').style.display = 'none';
+}
+
+function showScreen(id) {
+  document.getElementById('cover').style.display = 'none';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById(id);
+  screen.classList.add('active');
+  screen.classList.add('page-enter');
+  document.getElementById('backBtn').classList.add('visible');
+}
+
+function goHome() {
+  document.getElementById('cover').style.display = 'flex';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('backBtn').classList.remove('visible');
+  resetQuiz();
+}
+
+// ══ QUIZ LOGIC ══
+function startQuiz() {
+  currentQ = 0; score = 0;
+  document.getElementById('quiz-intro').style.display = 'none';
+  document.getElementById('quiz-game').style.display = 'flex';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[currentQ];
+  document.getElementById('qCounter').textContent = `Domanda ${currentQ + 1} di ${questions.length}`;
+  document.getElementById('progressFill').style.width = `${((currentQ + 1) / questions.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('feedbackMsg').classList.remove('show', 'wrong-msg');
+  document.getElementById('feedbackMsg').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const grid = document.getElementById('answersGrid');
+  grid.innerHTML = '';
+  q.answers.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.innerHTML = `<span class="answer-letter">${letters[i]}</span>${ans}`;
+    btn.onclick = () => checkAnswer(i);
+    grid.appendChild(btn);
+  });
+}
+
+function checkAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.answer-btn');
+  btns.forEach(b => b.classList.add('disabled'));
+
+  const fb = document.getElementById('feedbackMsg');
+  if (idx === q.correct) {
+    score++;
+    btns[idx].classList.add('correct');
+    fb.textContent = q.feedback;
+    fb.classList.remove('wrong-msg');
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    fb.textContent = q.wrongFeedbacks[idx] || "Non proprio. Ma la risposta giusta è ora evidenziata. 🎩";
+    fb.classList.add('wrong-msg');
+  }
+  fb.classList.add('show');
+
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = currentQ < questions.length - 1 ? 'Prossima Domanda' : 'Vedi il risultato';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-game').style.display = 'none';
+  document.getElementById('quiz-results').style.display = 'flex';
+  document.getElementById('resultScore').innerHTML = `${score} <span>/ ${questions.length}</span>`;
+
+  const pct = score / questions.length;
+  let msg, emoji;
+  if (pct === 1) {
+    msg = "Perfetto! Li conosci meglio degli sposi stessi 🥂";
+    emoji = "🏆";
+  } else if (pct >= 0.7) {
+    msg = "Ottimo! Sei davvero parte della loro storia";
+    emoji = "💛";
+  } else if (pct >= 0.4) {
+    msg = "Non male! Stasera imparerai ancora di più";
+    emoji = "🥂";
+  } else {
+    msg = "Oggi è la giornata giusta per conoscerli meglio!";
+    emoji = "💌";
+  }
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultEmoji').textContent = emoji;
+}
+
+function resetQuiz() {
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('quiz-intro').style.display = 'block';
+  document.getElementById('quiz-game').style.display = 'none';
+  document.getElementById('quiz-results').style.display = 'none';
+}
+
+
+</script>
+</body>
+</html>
