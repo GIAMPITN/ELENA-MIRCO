@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elena & Mirco — I vostri messaggi</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<title>Elena & Mirco: i vostri messaggi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -240,38 +240,119 @@
   }
 
   /* ── PRINT ── */
+  .print-only { display: none; }
+
+  /* ══ STAMPA ══ */
+  @page { margin: 18mm 15mm; }
+
   @media print {
-    body { background: white; color: #1A1208; }
-    #login-screen { display: none !important; }
-    #messages-screen { display: block !important; }
-    .print-btn { display: none; }
-    .page-header {
-      border-bottom: 1px solid #C9A84C;
-      padding: 20px 0 16px;
+    html, body {
+      background: #ffffff !important;
+      min-height: 0 !important;
+      height: auto !important;
+      color: #1A1208;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-    .page-header .tag { color: #C9A84C; }
-    .page-header h1 { color: #1A1208; font-size: 36px; }
-    .page-header h1 em { color: #C9A84C; }
-    .page-header .subtitle { color: #888; }
-    .messages-grid { padding: 24px 0; gap: 20px; }
+    body::before { display: none !important; }
+    .ornament { display: none !important; }
+
+    /* nasconde tutto ci\u00f2 che non \u00e8 il contenuto: schermata di accesso,
+       script e qualsiasi barra iniettata dall'hosting */
+    body > *:not(#messages-screen) { display: none !important; }
+
+    #messages-screen { display: block !important; }
+    .print-btn { display: none !important; }
+    .print-only { display: block !important; }
+
+    .page-header {
+      padding: 0 0 16px;
+      border-bottom: 1px solid #C2A44E;
+      position: static;
+    }
+    .page-header .tag {
+      color: #7E5C12;
+      font-size: 9.5pt;
+      font-weight: 600;
+      letter-spacing: 0.34em;
+      margin-bottom: 10px;
+    }
+    .page-header h1 { color: #1A1208; font-size: 30pt; line-height: 1.05; }
+    .page-header h1 em { color: #A8862F; }
+    .page-header .subtitle { color: #55503F; font-size: 11.5pt; margin-top: 10px; }
+    .page-header .deco-line { display: none !important; }
+
+    .count-bar {
+      border: none;
+      padding: 12px 0 24px;
+      color: #55503F;
+      font-size: 10.5pt;
+    }
+    .count-bar strong { color: #7E5C12; font-weight: 600; }
+
+    .messages-grid {
+      display: block;
+      max-width: 100%;
+      padding: 0;
+      gap: 0;
+    }
+
     .msg-card {
-      background: white;
-      border: 1px solid #C9A84C;
-      padding: 20px;
-      break-inside: avoid;
+      background: none !important;
+      border: none !important;
+      border-top: 1px solid #DCC98F !important;
+      padding: 18px 0 22px !important;
+      margin: 0 !important;
       opacity: 1 !important;
       animation: none !important;
       transform: none !important;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
-    netlify-hud, #netlify-hud,
-    [id*="netlify-hud"], [class*="netlify-hud"] { display: none !important; }
-    .msg-from { color: #C9A84C; border-bottom-color: #e8d08a; }
-    .msg-ts { color: #aaa; }
-    .msg-label { color: #aaa; }
-    .msg-text { color: #1A1208; font-size: 16px; }
-    .count-bar { color: #888; border-bottom-color: #e8d08a; }
-    .count-bar strong { color: #C9A84C; }
-    .msg-card::before, .msg-card::after { border-color: #C9A84C; }
+    .msg-card::before, .msg-card::after { display: none !important; }
+    .msg-card:first-child { border-top: none !important; padding-top: 4px !important; }
+
+    .msg-from {
+      color: #7E5C12;
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 10px;
+    }
+    .msg-ts {
+      color: #6E685A;
+      font-size: 8.5pt;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin-top: 5px;
+    }
+    .msg-item { margin-bottom: 0; }
+    .msg-text {
+      color: #241B10;
+      font-size: 12pt;
+      line-height: 1.7;
+      orphans: 2;
+      widows: 2;
+    }
+
+    .print-footer {
+      text-align: center;
+      padding-top: 26px;
+      margin-top: 8px;
+      border-top: 1px solid #C2A44E;
+      break-inside: avoid;
+    }
+    .print-footer .flourish { color: #7E5C12; font-size: 15pt; }
+    .print-footer .names {
+      display: block;
+      margin-top: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 11pt;
+      color: #55503F;
+    }
   }
 </style>
 </head>
@@ -294,13 +375,17 @@
 <div id="messages-screen">
   <div class="page-header">
     <button class="print-btn" onclick="window.print()">Stampa</button>
-    <p class="tag">28 Settembre 2026</p>
+    <p class="tag">28 settembre 2026</p>
     <h1>I vostri<br><em>Ospiti</em></h1>
     <p class="subtitle" id="msgSubtitle">Caricamento…</p>
     <div class="deco-line" style="margin-top:20px"><div class="deco-diamond"></div></div>
   </div>
   <div class="count-bar" id="countBar"></div>
   <div class="messages-grid" id="messagesGrid"></div>
+  <div class="print-footer print-only">
+    <span class="flourish">&#10087;</span>
+    <span class="names">Elena &amp; Mirco &middot; 28 settembre 2026</span>
+  </div>
 </div>
 
 <script>
@@ -332,8 +417,19 @@ function formatDate(iso) {
 async function loadMessages() {
   try {
     const res = await fetch(`/.netlify/functions/get-messages?pwd=${encodeURIComponent(PASSWORD)}`);
-    const messages = await res.json();
+    render(await res.json());
+  } catch(e) {
+    document.getElementById('msgSubtitle').textContent = 'Errore nel caricamento';
+  }
+}
 
+function esc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function render(messages) {
     const grid = document.getElementById('messagesGrid');
     const countBar = document.getElementById('countBar');
     const subtitle = document.getElementById('msgSubtitle');
@@ -354,19 +450,16 @@ async function loadMessages() {
       card.className = 'msg-card';
       card.style.animationDelay = `${idx * 0.05}s`;
 
-      const answers = m.r1 ? `<div class="msg-item"><div class="msg-text">${m.r1}</div></div>` : '';
+      const answers = m.r1 ? `<div class="msg-item"><div class="msg-text">${esc(m.r1)}</div></div>` : '';
 
       card.innerHTML = `
         <div class="msg-from">
-          ${m.nome}
+          ${esc(m.nome)}
           <span class="msg-ts">${formatDate(m.ts)}</span>
         </div>
         ${answers}`;
       grid.appendChild(card);
     });
-  } catch(e) {
-    document.getElementById('msgSubtitle').textContent = 'Errore nel caricamento';
-  }
 }
 </script>
 </body>

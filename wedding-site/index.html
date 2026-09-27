@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elena & Mirco — Il Giorno del Sì</title>
+<title>Elena & Mirco: il Giorno del Sì</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -586,7 +586,7 @@
     <em>Mirco</em>
   </div>
 
-  <p class="cover-subtitle">Benvenuto · Gioca con Noi</p>
+  <p class="cover-subtitle">Gioca con Noi</p>
 
   <div class="deco-line" style="opacity:0;animation:fadeUp 1s 0.9s forwards">
     <div class="deco-diamond"></div>
@@ -614,7 +614,7 @@
   <div id="quiz-intro">
     <div class="question-card" style="text-align:center; padding:40px 28px;">
       <p style="font-family:'Cormorant Garamond',serif; font-size:18px; line-height:1.7; color:var(--cream)">
-        Dieci domande su <em style="color:var(--gold-light)">Elena e Mirco</em>.<br>
+        Undici domande su <em style="color:var(--gold-light)">Elena e Mirco</em>.<br>
         Scopri quanto li conosci davvero.
       </p>
     </div>
@@ -626,7 +626,7 @@
 
   <!-- QUIZ QUESTIONS -->
   <div id="quiz-game" style="display:none; flex-direction:column; flex:1">
-    <div class="question-counter" id="qCounter">Domanda 1 di 10</div>
+    <div class="question-counter" id="qCounter">Domanda 1 di 11</div>
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
     <div class="question-card">
       <p class="question-text" id="questionText"></p>
@@ -642,7 +642,7 @@
   <div id="quiz-results" style="display:none; flex:1">
     <div class="result-screen">
       <div class="success-ring" id="resultEmoji">🥂</div>
-      <div class="result-score" id="resultScore">8 <span>/ 10</span></div>
+      <div class="result-score" id="resultScore">8 <span>/ 11</span></div>
       <p class="result-msg" id="resultMsg"></p>
       <div class="deco-line" style="width:100%"><div class="deco-diamond"></div></div>
       <button class="btn-gold" style="width:100%" onclick="vaiAiMessaggi()">Lascia un Messaggio</button>
@@ -707,7 +707,7 @@ const questions = [
     correct: 1,
     feedback: "2023. Tre anni, volati in un istante.",
     wrongFeedbacks: [
-      "2022? Sei arrivato in anticipo di un anno. Va beh che non vedevano l'ora però... anche tu!",
+      "2022? Sei arrivato in anticipo di un anno. Vabbè che non vedevano l'ora, però... anche tu!",
       null,
       "2024? Quasi quasi. Ma no. Erano già insieme da un anno quando tu pensavi stessero ancora solo chiacchierando.",
       "2025? Stai confondendo l'anno della proposta di matrimonio con quello in cui si sono messi insieme. Dettaglio non trascurabile."
@@ -717,7 +717,7 @@ const questions = [
     q: "Dov'è stato il loro primo appuntamento?",
     answers: ["In un circuito", "In un ristorante a Trento", "In un ristorante a Peschiera", "In un ristorante a Bergamo"],
     correct: 3,
-    feedback: "Bergamo. Lui precisino al millimetro, lei con quegli occhi blu — il ristorante non aveva speranze. 🍷",
+    feedback: "Bergamo. Lui tutto elegante, percorre 200 km solo per lei, lei con quegli occhi blu, meravigliosa come sempre... nulla poteva andare storto!",
     wrongFeedbacks: [
       "In un circuito? Mirco ci va, sì... ma non era proprio il setting ideale per conquistare Elena. 🏎️",
       "Trento era casa sua, non il luogo del primo appuntamento. E ti sembrava che facessero una cosa semplice!",
@@ -733,7 +733,7 @@ const questions = [
     wrongFeedbacks: [
       "Nessuna proposta? Ma lo conosci Mirco? Credi davvero che abbia lasciato una cosa del genere al caso? 📐",
       null,
-      "Elena lo ha chiesto a Mirco? Elena è anticonformista ma dai… no, Mirco a queste cose ci tiene.",
+      "Elena lo ha chiesto a Mirco? Elena è anticonformista, ma dai... no, Mirco a queste cose ci tiene.",
       "Via WhatsApp?! OK... va bene che è comodo, ma a tutto c'è un limite!"
     ]
   },
@@ -743,7 +743,7 @@ const questions = [
     correct: 2,
     feedback: "Linguine alle vongole. Elegante, decisa, niente fronzoli. Esattamente come lei. 🍝",
     wrongFeedbacks: [
-      "Pizza Margherita. Ottima scelta, ma non la sua. Elena ha gusto più raffinato.",
+      "Pizza Margherita. Ottima scelta, ma non la sua. Elena ha un gusto più raffinato.",
       "Caesar salad? Elena non ha bisogno di dieta. Pensa a qualcosa con più carattere. 🐚",
       null,
       "Pasta al pesto. Basilare. Elena merita di meglio, e lo sa. 🌿"
@@ -753,7 +753,7 @@ const questions = [
     q: "Qual è il piatto preferito di Mirco?",
     answers: ["Carbonara", "Tagliata di pollo", "Profitterol", "Pasta al pesto"],
     correct: 0,
-    feedback: "La carbonara. Un piatto che deve essere fatto bene e non perdona errori grossolani. Può arrivare anche a mangiarne due piatti di seguito — secondo te gli piace?",
+    feedback: "La carbonara. Un piatto che deve essere fatto bene e non perdona errori grossolani. Può arrivare anche a mangiarne due piatti di seguito. Secondo te gli piace?",
     wrongFeedbacks: [
       null,
       "Tagliata di pollo? Mirco non è più in preparazione atletica. È un uomo di carbonara, niente compromessi.",
@@ -763,11 +763,11 @@ const questions = [
   },
   {
     q: "Qual è il film o la serie preferita di Mirco?",
-    answers: ["Mamma ho perso l'aereo", "The Big Bang Theory", "The Fast and Furious", "Prison Break"],
+    answers: ["Mamma, ho perso l'aereo", "The Big Bang Theory", "Fast and Furious", "Prison Break"],
     correct: 2,
-    feedback: "Fast and Furious! Basta che sente il rumore del motore per essere felice! 🏎️",
+    feedback: "Fast and Furious! Basta che senta il rumore del motore per essere felice! 🏎️",
     wrongFeedbacks: [
-      "Mamma ho perso l'aereo? Mirco pianifica tutto con precisione millimetrica. Non perde neanche un cappellino, figuriamoci un aereo.",
+      "Mamma, ho perso l'aereo? Mirco pianifica tutto con precisione millimetrica. Non perde neanche un cappellino, figuriamoci un aereo.",
       "The Big Bang Theory? Mirco è più uomo d'azione che di teoria. Molto più concreto!",
       null,
       "Prison Break? Mirco adora anche questo genere di film, ma è Fast and Furious il suo preferito!"
@@ -806,30 +806,30 @@ const questions = [
       "Il romanticismo di Elena? Basta guardarlo quando la guarda: brodo di giuggiole!",
       null,
       "La sensibilità? Ma secondo te davvero potrebbe dargli fastidio? Ma cos'è, ti ci sei infilato a questo matrimonio?",
-      "La solarità?! Se volevi mangiare a sbaffo e ti sei infilato in villa al primo matrimonio che hai trovato dillo. Perché qui sembra che tu non sappia proprio niente."
+      "La solarità?! Se volevi mangiare a sbaffo e ti sei infilato in villa al primo matrimonio che hai trovato, dillo. Perché qui sembra che tu non sappia proprio niente."
     ]
   },
   {
     q: "Qual è la frase che Elena ripete sempre?",
-    answers: ["Quando andiamo in pista?", "Ho sonno", "Che palle questo caldo / amo l'inverno!", "Andiamo a fare un giro in bici"],
+    answers: ["Quando andiamo in pista?", "Ho sonno", "Che palle questo caldo! Amo l'inverno!", "Andiamo a fare un giro in bici"],
     correct: 2,
     feedback: "\"Che palle questo caldo.\" Elena e le temperature estive: un conflitto irrisolvibile, probabilmente più antico della loro storia d'amore. ❄️",
     wrongFeedbacks: [
-      "\"Quando andiamo in pista?\" Beh se hai scelto questa... ESCI SUBITO DA QUI! Vai via!",
+      "\"Quando andiamo in pista?\" Beh, se hai scelto questa... ESCI SUBITO DA QUI! Vai via!",
       "\"Ho sonno\" è un'opzione plausibile, ci sei andato vicino. Ma succede solo la sera, e di botto. Quindi non lo direbbe mai prima.",
       null,
-      "\"Andiamo a fare un giro in bici\"? Ora, se hai scelto questa risposta è meglio che pedali! Perché se potesse, Elena le passeggiate in bici le vieterebbe per legge!"
+      "\"Andiamo a fare un giro in bici\"? Ora, se hai scelto questa risposta, è meglio che pedali! Perché, se potesse, Elena le passeggiate in bici le vieterebbe per legge!"
     ]
   },
   {
     q: "Qual è la frase che Mirco ripete sempre?",
-    answers: ["Questa sera non mangio", "Mi riposo sul divano", "Questa sera cucino io", "Quand'è la prossima volta che andiamo con i gokart/moto?"],
+    answers: ["Questa sera non mangio", "Mi riposo sul divano", "Questa sera cucino io", "Quand'è la prossima volta che andiamo con i go-kart o con la moto?"],
     correct: 3,
-    feedback: "\"Quand'è la prossima volta…?\" Pilota di moto, passione per le auto, go-kart ogni volta che può. La velocità non gli passa. Elena lo sa. 🏁",
+    feedback: "\"Quand'è la prossima volta...?\" Pilota di moto, passione per le auto, go-kart ogni volta che può. La velocità non gli passa. Elena lo sa. 🏁",
     wrongFeedbacks: [
-      "\"Questa sera non mangio\"? E niente, se hai scelto questa vuol dire che stai scegliendo a caso e non lo conosci proprio.",
+      "\"Questa sera non mangio\"? E niente, se hai scelto questa, vuol dire che stai scegliendo a caso e non lo conosci proprio.",
       "\"Mi riposo sul divano\"? Con tutte le cose da fare? Sul divano solo con 39 di febbre.",
-      "\"Questa sera cucino io\"? No, ti prego. Lo hai mai visto cucinare? Neanche con il bimby è capace!",
+      "\"Questa sera cucino io\"? No, ti prego. Lo hai mai visto cucinare? Neanche con il Bimby è capace!",
       null
     ]
   }
@@ -839,6 +839,7 @@ const questions = [
 let currentQ = 0;
 let score = 0;
 let answered = false;
+let scelte = [];
 
 // ══ DOMANDE OSPITI ══
 async function submitAnswers() {
@@ -932,7 +933,7 @@ function goHome() {
 
 // ══ QUIZ LOGIC ══
 function startQuiz() {
-  currentQ = 0; score = 0;
+  currentQ = 0; score = 0; scelte = [];
   document.getElementById('quiz-intro').style.display = 'none';
   document.getElementById('quiz-game').style.display = 'flex';
   renderQuestion();
@@ -967,6 +968,7 @@ function checkAnswer(idx) {
   const btns = document.querySelectorAll('.answer-btn');
   btns.forEach(b => b.classList.add('disabled'));
 
+  scelte[currentQ] = idx;
   const fb = document.getElementById('feedbackMsg');
   if (idx === q.correct) {
     score++;
@@ -1003,13 +1005,13 @@ function showResults() {
   const pct = score / questions.length;
   let msg, emoji;
   if (pct === 1) {
-    msg = "Perfetto! Li conosci meglio degli sposi stessi 🥂";
+    msg = "Perfetto! Li conosci meglio degli sposi stessi. 🥂";
     emoji = "🏆";
   } else if (pct >= 0.7) {
-    msg = "Ottimo! Sei davvero parte della loro storia";
+    msg = "Ottimo! Sei davvero parte della loro storia.";
     emoji = "💛";
   } else if (pct >= 0.4) {
-    msg = "Non male! Stasera imparerai ancora di più";
+    msg = "Non male! Stasera imparerai ancora di più.";
     emoji = "🥂";
   } else {
     msg = "Oggi è la giornata giusta per conoscerli meglio!";
@@ -1017,10 +1019,29 @@ function showResults() {
   }
   document.getElementById('resultMsg').textContent = msg;
   document.getElementById('resultEmoji').textContent = emoji;
+  inviaRisultatoQuiz();
+}
+
+// Invio silenzioso del risultato per il report degli sposi.
+// Conta solo la prima partita completa di ogni telefono.
+// Qualsiasi errore viene ignorato: il quiz dell'ospite non ne risente.
+function inviaRisultatoQuiz() {
+  try {
+    if (scelte.length !== questions.length) return;
+    try { if (localStorage.getItem('em_quiz_inviato')) return; } catch(e) {}
+    fetch('/.netlify/functions/save-quiz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ a: scelte.slice() }),
+      keepalive: true
+    }).then(function(res) {
+      if (res.ok) { try { localStorage.setItem('em_quiz_inviato', '1'); } catch(e) {} }
+    }).catch(function() {});
+  } catch(e) {}
 }
 
 function resetQuiz() {
-  currentQ = 0; score = 0; answered = false;
+  currentQ = 0; score = 0; answered = false; scelte = [];
   document.getElementById('quiz-intro').style.display = 'block';
   document.getElementById('quiz-game').style.display = 'none';
   document.getElementById('quiz-results').style.display = 'none';
