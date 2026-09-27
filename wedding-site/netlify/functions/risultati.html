@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elena & Mirco: quanto vi conoscono</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --dark: #0D0B08;
+    --dark-2: #1A1612;
+    --cream: #F0E8D5;
+    --text: #D4C8A8;
+    --text-dim: #8A7D5E;
+  }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  /* ACCESSO */
+  #login-screen {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 40px 24px; text-align: center;
+  }
+  #login-screen h1 {
+    font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300;
+    color: var(--cream); margin-bottom: 8px;
+  }
+  #login-screen h1 em { font-style: italic; color: var(--gold-light); }
+  #login-screen p {
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic;
+    color: var(--text-dim); margin-bottom: 40px;
+  }
+  .deco-line { display: flex; align-items: center; gap: 16px; justify-content: center; margin: 20px 0; }
+  .deco-line::before, .deco-line::after {
+    content: ''; flex: 1; height: 1px; max-width: 100px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+  .pwd-wrap { width: 100%; max-width: 300px; margin: 0 auto 24px; }
+  .pwd-input {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3); padding: 12px 0;
+    font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--cream);
+    outline: none; text-align: center; letter-spacing: 0.1em;
+  }
+  .pwd-input:focus { border-bottom-color: var(--gold); }
+  .pwd-input::placeholder { color: var(--text-dim); font-style: italic; }
+  .pwd-error { font-size: 13px; color: rgba(255,150,150,0.8); margin-top: 12px; font-style: italic; min-height: 20px; }
+  .btn-gold {
+    background: linear-gradient(135deg, #C9A84C, #E8D08A, #C9A84C); background-size: 200%;
+    color: var(--dark); border: none; padding: 16px 48px; font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 400; letter-spacing: 0.35em; text-transform: uppercase;
+    cursor: pointer; width: 100%; max-width: 300px;
+  }
+
+  /* REPORT */
+  #report-screen { display: none; }
+  .page-header {
+    text-align: center; padding: 60px 24px 36px;
+    border-bottom: 1px solid rgba(201,168,76,0.15); position: relative;
+  }
+  .page-header .tag {
+    font-size: 10px; letter-spacing: 0.45em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 8vw, 56px);
+    font-weight: 300; color: var(--cream); line-height: 1.1;
+  }
+  .page-header h1 em { font-style: italic; color: var(--gold-light); }
+  .page-header .subtitle {
+    font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic;
+    color: var(--text-dim); margin-top: 12px;
+  }
+  .print-btn {
+    position: absolute; top: 24px; right: 24px; background: transparent;
+    border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 10px 20px;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat {
+    text-align: center; padding: 22px 8px;
+    border: 1px solid rgba(201,168,76,0.18);
+    background: linear-gradient(135deg, rgba(42,35,24,0.8), rgba(26,22,18,0.9));
+  }
+  .stat .num { font-family: 'Cormorant Garamond', serif; font-size: 40px; color: var(--gold-light); line-height: 1; }
+  .stat .lbl { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); margin-top: 10px; }
+
+  .verdict {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic;
+    color: var(--cream); text-align: center; line-height: 1.5; margin: 8px 0 36px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant SC', serif; font-size: 13px; letter-spacing: 0.3em;
+    color: var(--gold); text-align: center; margin: 40px 0 20px;
+  }
+
+  .podio { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .podio .box { padding: 20px; border: 1px solid rgba(201,168,76,0.18); }
+  .podio .box .k { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .podio .box .v { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); line-height: 1.4; }
+  .podio .box .p { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--text-dim); margin-top: 6px; }
+
+  .q-card {
+    padding: 26px 26px 22px; margin-bottom: 18px; position: relative;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: linear-gradient(135deg, rgba(42,35,24,0.8), rgba(26,22,18,0.9));
+  }
+  .q-num { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .q-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--cream); line-height: 1.35; margin-bottom: 14px; }
+  .bar { height: 6px; background: rgba(201,168,76,0.12); position: relative; margin: 6px 0 10px; }
+  .bar > span { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #A8862F, #E8D08A); }
+  .q-line { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .q-line strong { color: var(--gold-light); font-weight: 400; }
+  .q-comment { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: var(--gold-light); margin-top: 8px; }
+
+  .dist { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; align-items: end; height: 140px; }
+  .dist .col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .dist .col .b { width: 100%; background: linear-gradient(0deg, #A8862F, #E8D08A); min-height: 2px; }
+  .dist .col .n { font-size: 11px; color: var(--gold-light); margin-bottom: 4px; }
+  .dist .col .x { font-size: 10px; color: var(--text-dim); margin-top: 6px; }
+  .dist-caption { text-align: center; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-dim); margin-top: 12px; }
+
+  .empty-state {
+    text-align: center; padding: 80px 24px; font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-style: italic; color: var(--text-dim);
+  }
+
+  @media (max-width: 520px) {
+    .stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .stat .num { font-size: 30px; }
+    .podio { grid-template-columns: 1fr; }
+    .print-btn { position: static; margin-bottom: 18px; }
+  }
+
+  @page { margin: 16mm 14mm; }
+  @media print {
+    html, body { background: #fff !important; color: #1A1208; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body > *:not(#report-screen) { display: none !important; }
+    #report-screen { display: block !important; }
+    .print-btn { display: none !important; }
+    .page-header { padding: 0 0 18px; border-bottom: 1px solid #A8862F; }
+    .page-header .tag, .section-title, .podio .box .k { color: #7E5C12; }
+    .page-header h1, .q-text, .verdict, .podio .box .v { color: #1A1208; }
+    .page-header h1 em, .stat .num, .q-comment, .q-line strong, .dist .col .n { color: #7E5C12; }
+    .stat, .q-card, .podio .box { background: #fff !important; border-color: #C9A84C; }
+    .q-line, .page-header .subtitle, .stat .lbl, .q-num, .podio .box .p, .dist .col .x, .dist-caption { color: #4A3E28; }
+    .q-card, .podio .box, .stat { break-inside: avoid; page-break-inside: avoid; }
+    .wrap { padding: 20px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <h1><em>Elena</em> &amp; <em>Mirco</em></h1>
+  <p>Il report del quiz</p>
+  <div class="deco-line"><div class="deco-diamond"></div></div>
+  <div class="pwd-wrap">
+    <input class="pwd-input" type="password" id="pwdInput" placeholder="Password…"
+      onkeydown="if(event.key==='Enter') checkPwd()">
+    <p class="pwd-error" id="pwdError"></p>
+  </div>
+  <button class="btn-gold" onclick="checkPwd()">Entra</button>
+</div>
+
+<div id="report-screen">
+  <div class="page-header">
+    <button class="print-btn" onclick="window.print()">Stampa</button>
+    <p class="tag">Il report del quiz</p>
+    <h1>Quanto vi<br><em>conoscono?</em></h1>
+    <p class="subtitle" id="subtitle">Caricamento…</p>
+    <div class="deco-line" style="margin-top:20px"><div class="deco-diamond"></div></div>
+  </div>
+  <div class="wrap" id="content"></div>
+</div>
+
+<script>
+const PASSWORD = 'Elena&Mirco2026';
+const QUESTIONS = [
+  {
+    "q": "In che anno hanno iniziato a stare insieme Elena e Mirco?",
+    "answers": [
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Dov'è stato il loro primo appuntamento?",
+    "answers": [
+      "In un circuito",
+      "In un ristorante a Trento",
+      "In un ristorante a Peschiera",
+      "In un ristorante a Bergamo"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Come si sono fidanzati ufficialmente?",
+    "answers": [
+      "Nessuna proposta ufficiale",
+      "Mirco ha comprato due paia di scarpe personalizzate con le iniziali dei nomi stampate dietro",
+      "Durante un weekend di gara Elena lo ha chiesto a Mirco",
+      "Mirco lo ha chiesto ad Elena tramite WhatsApp"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il piatto preferito di Elena?",
+    "answers": [
+      "Pizza Margherita",
+      "Caesar salad",
+      "Linguine alle vongole",
+      "Pasta al pesto"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il piatto preferito di Mirco?",
+    "answers": [
+      "Carbonara",
+      "Tagliata di pollo",
+      "Profitterol",
+      "Pasta al pesto"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Qual è il film o la serie preferita di Mirco?",
+    "answers": [
+      "Mamma, ho perso l'aereo",
+      "The Big Bang Theory",
+      "Fast and Furious",
+      "Prison Break"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il loro film preferito da vedere insieme a casa?",
+    "answers": [
+      "Harry Potter",
+      "Benvenuti al Sud",
+      "Nessuno, perché Elena si addormenta sempre",
+      "Mr. Bean"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è la cosa che Elena non sopporta di Mirco (ma in fondo ama)?",
+    "answers": [
+      "Puntualità",
+      "Romanticismo",
+      "Ambizione",
+      "Precisione"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Qual è la cosa che Mirco non sopporta di Elena (ma in fondo ama)?",
+    "answers": [
+      "Romanticismo",
+      "Permalosità",
+      "Sensibilità",
+      "Solarità"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è la frase che Elena ripete sempre?",
+    "answers": [
+      "Quando andiamo in pista?",
+      "Ho sonno",
+      "Che palle questo caldo! Amo l'inverno!",
+      "Andiamo a fare un giro in bici"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è la frase che Mirco ripete sempre?",
+    "answers": [
+      "Questa sera non mangio",
+      "Mi riposo sul divano",
+      "Questa sera cucino io",
+      "Quand'è la prossima volta che andiamo con i go-kart o con la moto?"
+    ],
+    "correct": 3
+  }
+];
+const LETTERE = ['A', 'B', 'C', 'D'];
+
+function esc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function checkPwd() {
+  const val = document.getElementById('pwdInput').value;
+  if (val === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('report-screen').style.display = 'block';
+    carica();
+  } else {
+    document.getElementById('pwdError').textContent = 'Password non corretta.';
+    document.getElementById('pwdInput').value = '';
+  }
+}
+
+async function carica() {
+  try {
+    const res = await fetch('/.netlify/functions/get-quiz?pwd=' + encodeURIComponent(PASSWORD));
+    if (!res.ok) throw new Error('http ' + res.status);
+    const dati = await res.json();
+    mostra(Array.isArray(dati) ? dati : []);
+  } catch (e) {
+    document.getElementById('subtitle').textContent = 'Errore nel caricamento. Riprova tra poco.';
+  }
+}
+
+function commentoDomanda(pct) {
+  if (pct === 100) return 'Plebiscito. Su questa nessuno ha avuto dubbi.';
+  if (pct >= 80) return 'Facile. Questa la sapevano tutti, o quasi.';
+  if (pct >= 60) return 'Promossi. La maggioranza vi conosce bene.';
+  if (pct >= 40) return 'Metà e metà. Mezzo matrimonio ha tirato a indovinare.';
+  if (pct >= 20) return 'Mistero fitto. Qui vi conoscono in pochi.';
+  return 'Segreto di Stato. Questa, a quanto pare, la sapete solo voi.';
+}
+
+function verdetto(pct) {
+  if (pct >= 80) return 'I vostri ospiti vi conoscono meglio di quanto pensiate. Forse anche troppo.';
+  if (pct >= 60) return 'Promossi a pieni voti: siete circondati da persone che vi ascoltano davvero.';
+  if (pct >= 40) return 'Vi conoscono abbastanza. Per il resto, c’è sempre il prossimo anniversario.';
+  return 'Siete riusciti a mantenere un certo mistero. Molti ospiti, a quanto pare, sono venuti soprattutto per mangiare.';
+}
+
+function ospiti(n) { return n === 1 ? '1 ospite' : n + ' ospiti'; }
+
+function mostra(partite) {
+  const box = document.getElementById('content');
+  const sub = document.getElementById('subtitle');
+  const valide = partite.filter(p => Array.isArray(p.a) && p.a.length === QUESTIONS.length);
+  const N = valide.length;
+
+  if (N === 0) {
+    sub.textContent = 'Ancora nessuna partita';
+    box.innerHTML = '<div class="empty-state">Nessuno ha ancora finito il quiz.<br>Tornate a guardare più tardi.</div>';
+    return;
+  }
+
+  // Statistiche per domanda
+  const perDomanda = QUESTIONS.map((q, i) => {
+    const conteggi = [0, 0, 0, 0];
+    valide.forEach(p => { const s = p.a[i]; if (s >= 0 && s <= 3) conteggi[s]++; });
+    const giuste = conteggi[q.correct];
+    let sbagliataTop = -1, maxSb = 0;
+    conteggi.forEach((c, k) => { if (k !== q.correct && c > maxSb) { maxSb = c; sbagliataTop = k; } });
+    return { i, q, conteggi, giuste, pct: Math.round(giuste / N * 100), sbagliataTop, maxSb };
+  });
+
+  // Punteggi
+  const punteggi = valide.map(p => p.a.reduce((t, s, i) => t + (s === QUESTIONS[i].correct ? 1 : 0), 0));
+  const media = punteggi.reduce((a, b) => a + b, 0) / N;
+  const pieni = punteggi.filter(s => s === QUESTIONS.length).length;
+  const pctMedia = media / QUESTIONS.length * 100;
+
+  sub.textContent = ospiti(N) + (N === 1 ? ' ha giocato' : ' hanno giocato');
+
+  const ordinate = perDomanda.slice().sort((a, b) => b.pct - a.pct);
+  const facile = ordinate[0];
+  const difficile = ordinate[ordinate.length - 1];
+
+  let html = '';
+  html += '<div class="stats">'
+    + '<div class="stat"><div class="num">' + N + '</div><div class="lbl">Partite</div></div>'
+    + '<div class="stat"><div class="num">' + media.toFixed(1).replace('.', ',') + '</div><div class="lbl">Media su ' + QUESTIONS.length + '</div></div>'
+    + '<div class="stat"><div class="num">' + pieni + '</div><div class="lbl">Punteggio pieno</div></div>'
+    + '</div>';
+  html += '<p class="verdict">' + esc(verdetto(pctMedia)) + '</p>';
+
+  html += '<p class="section-title">I due estremi</p>';
+  html += '<div class="podio">'
+    + '<div class="box"><div class="k">La più facile</div><div class="v">' + esc(facile.q.q) + '</div><div class="p">' + facile.pct + '% di risposte giuste</div></div>'
+    + '<div class="box"><div class="k">La più difficile</div><div class="v">' + esc(difficile.q.q) + '</div><div class="p">' + difficile.pct + '% di risposte giuste</div></div>'
+    + '</div>';
+
+  html += '<p class="section-title">Domanda per domanda</p>';
+  perDomanda.forEach(d => {
+    html += '<div class="q-card">'
+      + '<div class="q-num">Domanda ' + (d.i + 1) + '</div>'
+      + '<div class="q-text">' + esc(d.q.q) + '</div>'
+      + '<div class="q-line">Risposta giusta: <strong>' + esc(d.q.answers[d.q.correct]) + '</strong></div>'
+      + '<div class="bar"><span style="width:' + d.pct + '%"></span></div>'
+      + '<div class="q-line"><strong>' + d.giuste + ' su ' + N + '</strong> hanno risposto giusto (' + d.pct + '%).</div>';
+    if (d.sbagliataTop >= 0) {
+      html += '<div class="q-line">La risposta sbagliata più scelta: «' + esc(d.q.answers[d.sbagliataTop]) + '», da ' + ospiti(d.maxSb) + '.</div>';
+    }
+    html += '<div class="q-comment">' + esc(commentoDomanda(d.pct)) + '</div>'
+      + '</div>';
+  });
+
+  // Distribuzione dei punteggi
+  const dist = new Array(QUESTIONS.length + 1).fill(0);
+  punteggi.forEach(s => dist[s]++);
+  const maxD = Math.max.apply(null, dist) || 1;
+  html += '<p class="section-title">Come sono andati</p>';
+  html += '<div class="dist" style="grid-template-columns: repeat(' + dist.length + ', 1fr)">';
+  dist.forEach((c, s) => {
+    html += '<div class="col"><div class="n">' + (c || '') + '</div>'
+      + '<div class="b" style="height:' + Math.round(c / maxD * 100) + '%"></div>'
+      + '<div class="x">' + s + '</div></div>';
+  });
+  html += '</div><p class="dist-caption">Numero di ospiti per punteggio</p>';
+
+  box.innerHTML = html;
+}
+</script>
+</body>
+</html>

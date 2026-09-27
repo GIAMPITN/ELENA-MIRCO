@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elena & Mirco: i vostri messaggi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --dark: #0D0B08;
+    --dark-2: #1A1612;
+    --dark-3: #2A2318;
+    --cream: #F0E8D5;
+    --text: #D4C8A8;
+    --text-dim: #8A7D5E;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  #login-screen h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  #login-screen h1 em { font-style: italic; color: var(--gold-light); }
+  #login-screen p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+  }
+  .deco-line {
+    display: flex; align-items: center; gap: 16px;
+    justify-content: center; margin: 20px 0;
+  }
+  .deco-line::before, .deco-line::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    max-width: 100px;
+  }
+  .deco-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  .pwd-wrap { width: 100%; max-width: 300px; margin: 0 auto 24px; }
+  .pwd-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 12px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--cream);
+    outline: none;
+    text-align: center;
+    transition: border-color 0.3s;
+    letter-spacing: 0.1em;
+  }
+  .pwd-input:focus { border-bottom-color: var(--gold); }
+  .pwd-input::placeholder { color: var(--text-dim); font-style: italic; }
+  .pwd-error {
+    font-size: 13px; color: rgba(255,150,150,0.8);
+    margin-top: 12px; font-style: italic; min-height: 20px;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #C9A84C, #E8D08A, #C9A84C);
+    background-size: 200%;
+    color: var(--dark);
+    border: none;
+    padding: 16px 48px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-gold:hover { background-position: right; transform: translateY(-2px); }
+
+  /* ── MESSAGES PAGE ── */
+  #messages-screen { display: none; }
+
+  .page-header {
+    text-align: center;
+    padding: 60px 24px 40px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    position: relative;
+  }
+  .page-header .tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 8vw, 56px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+  .page-header h1 em { font-style: italic; color: var(--gold-light); }
+  .page-header .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-top: 12px;
+  }
+
+  .print-btn {
+    position: absolute;
+    top: 24px; right: 24px;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 10px 20px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .print-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  .messages-grid {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    display: grid;
+    gap: 32px;
+  }
+
+  .msg-card {
+    background: linear-gradient(135deg, rgba(42,35,24,0.8), rgba(26,22,18,0.9));
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 32px;
+    position: relative;
+    animation: fadeUp 0.5s forwards;
+  }
+  .msg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border-top: 1px solid var(--gold);
+    border-left: 1px solid var(--gold);
+  }
+  .msg-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 32px; height: 32px;
+    border-bottom: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+  }
+  .msg-from {
+    font-family: 'Cormorant SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .msg-ts {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    float: right;
+    margin-top: 2px;
+  }
+  .msg-item { margin-bottom: 16px; }
+  .msg-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .msg-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  .count-bar {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .count-bar strong { color: var(--gold); font-style: normal; }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PRINT ── */
+  .print-only { display: none; }
+
+  /* ══ STAMPA ══ */
+  @page { margin: 18mm 15mm; }
+
+  @media print {
+    html, body {
+      background: #ffffff !important;
+      min-height: 0 !important;
+      height: auto !important;
+      color: #1A1208;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body::before { display: none !important; }
+    .ornament { display: none !important; }
+
+    /* nasconde tutto ci\u00f2 che non \u00e8 il contenuto: schermata di accesso,
+       script e qualsiasi barra iniettata dall'hosting */
+    body > *:not(#messages-screen) { display: none !important; }
+
+    #messages-screen { display: block !important; }
+    .print-btn { display: none !important; }
+    .print-only { display: block !important; }
+
+    .page-header {
+      padding: 0 0 16px;
+      border-bottom: 1px solid #C2A44E;
+      position: static;
+    }
+    .page-header .tag {
+      color: #7E5C12;
+      font-size: 9.5pt;
+      font-weight: 600;
+      letter-spacing: 0.34em;
+      margin-bottom: 10px;
+    }
+    .page-header h1 { color: #1A1208; font-size: 30pt; line-height: 1.05; }
+    .page-header h1 em { color: #A8862F; }
+    .page-header .subtitle { color: #55503F; font-size: 11.5pt; margin-top: 10px; }
+    .page-header .deco-line { display: none !important; }
+
+    .count-bar {
+      border: none;
+      padding: 12px 0 24px;
+      color: #55503F;
+      font-size: 10.5pt;
+    }
+    .count-bar strong { color: #7E5C12; font-weight: 600; }
+
+    .messages-grid {
+      display: block;
+      max-width: 100%;
+      padding: 0;
+      gap: 0;
+    }
+
+    .msg-card {
+      background: none !important;
+      border: none !important;
+      border-top: 1px solid #DCC98F !important;
+      padding: 18px 0 22px !important;
+      margin: 0 !important;
+      opacity: 1 !important;
+      animation: none !important;
+      transform: none !important;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .msg-card::before, .msg-card::after { display: none !important; }
+    .msg-card:first-child { border-top: none !important; padding-top: 4px !important; }
+
+    .msg-from {
+      color: #7E5C12;
+      font-size: 11pt;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 10px;
+    }
+    .msg-ts {
+      color: #6E685A;
+      font-size: 8.5pt;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin-top: 5px;
+    }
+    .msg-item { margin-bottom: 0; }
+    .msg-text {
+      color: #241B10;
+      font-size: 12pt;
+      line-height: 1.7;
+      orphans: 2;
+      widows: 2;
+    }
+
+    .print-footer {
+      text-align: center;
+      padding-top: 26px;
+      margin-top: 8px;
+      border-top: 1px solid #C2A44E;
+      break-inside: avoid;
+    }
+    .print-footer .flourish { color: #7E5C12; font-size: 15pt; }
+    .print-footer .names {
+      display: block;
+      margin-top: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 11pt;
+      color: #55503F;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <h1><em>Elena</em> &amp; <em>Mirco</em></h1>
+  <p>I messaggi dei vostri ospiti</p>
+  <div class="deco-line"><div class="deco-diamond"></div></div>
+  <div class="pwd-wrap">
+    <input class="pwd-input" type="password" id="pwdInput" placeholder="Password…"
+      onkeydown="if(event.key==='Enter') checkPwd()">
+    <p class="pwd-error" id="pwdError"></p>
+  </div>
+  <button class="btn-gold" onclick="checkPwd()">Entra</button>
+</div>
+
+<!-- MESSAGES -->
+<div id="messages-screen">
+  <div class="page-header">
+    <button class="print-btn" onclick="window.print()">Stampa</button>
+    <p class="tag">28 settembre 2026</p>
+    <h1>I vostri<br><em>Ospiti</em></h1>
+    <p class="subtitle" id="msgSubtitle">Caricamento…</p>
+    <div class="deco-line" style="margin-top:20px"><div class="deco-diamond"></div></div>
+  </div>
+  <div class="count-bar" id="countBar"></div>
+  <div class="messages-grid" id="messagesGrid"></div>
+  <div class="print-footer print-only">
+    <span class="flourish">&#10087;</span>
+    <span class="names">Elena &amp; Mirco &middot; 28 settembre 2026</span>
+  </div>
+</div>
+
+<script>
+const PASSWORD = 'Elena&Mirco2026';
+const LABELS = ["L'augurio", "Il ricordo", "Il consiglio", "Tra dieci anni"];
+const KEYS = ['r1', 'r2', 'r3', 'r4'];
+
+function checkPwd() {
+  const val = document.getElementById('pwdInput').value;
+  if (val === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('messages-screen').style.display = 'block';
+    loadMessages();
+  } else {
+    document.getElementById('pwdError').textContent = 'Password non corretta.';
+    document.getElementById('pwdInput').value = '';
+  }
+}
+
+function formatDate(iso) {
+  try {
+    return new Date(iso).toLocaleDateString('it-IT', {
+      day: '2-digit', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  } catch(e) { return ''; }
+}
+
+async function loadMessages() {
+  try {
+    const res = await fetch(`/.netlify/functions/get-messages?pwd=${encodeURIComponent(PASSWORD)}`);
+    render(await res.json());
+  } catch(e) {
+    document.getElementById('msgSubtitle').textContent = 'Errore nel caricamento';
+  }
+}
+
+function esc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function render(messages) {
+    const grid = document.getElementById('messagesGrid');
+    const countBar = document.getElementById('countBar');
+    const subtitle = document.getElementById('msgSubtitle');
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+      subtitle.textContent = 'Ancora nessun messaggio';
+      countBar.innerHTML = '';
+      grid.innerHTML = '<div class="empty-state">Nessun messaggio ancora.<br>Gli ospiti scriveranno durante il ricevimento.</div>';
+      return;
+    }
+
+    subtitle.textContent = 'Tutti i messaggi del vostro giorno speciale';
+    countBar.innerHTML = `<strong>${messages.length}</strong> ${messages.length === 1 ? 'ospite ha scritto' : 'ospiti hanno scritto'}`;
+
+    grid.innerHTML = '';
+    [...messages].reverse().forEach((m, idx) => {
+      const card = document.createElement('div');
+      card.className = 'msg-card';
+      card.style.animationDelay = `${idx * 0.05}s`;
+
+      const answers = m.r1 ? `<div class="msg-item"><div class="msg-text">${esc(m.r1)}</div></div>` : '';
+
+      card.innerHTML = `
+        <div class="msg-from">
+          ${esc(m.nome)}
+          <span class="msg-ts">${formatDate(m.ts)}</span>
+        </div>
+        ${answers}`;
+      grid.appendChild(card);
+    });
+}
+</script>
+</body>
+</html>
